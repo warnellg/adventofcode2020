@@ -2,11 +2,6 @@ import re
 
 # ======================================================================
 # HELPER FUNCTIONS
-# statement parsing function
-def parseStatement(statement):
-    # define some regexs for parsing
-    rx_parent = r'(\w+ \w+) bags'
-# statement parsing function
 def parseStatement(statement):
     # define some regexs for parsing
     rx_parent = r'(\w+ \w+) bags'
@@ -97,5 +92,6 @@ for statement in statements:
 
 # call recursive function to compute number of bags contained
 bagsContained = getBagsContained(bagGraph2, 'shiny gold')
+
 
 print('Total number of bags contained is {}.'.format(bagsContained))
