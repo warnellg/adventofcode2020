@@ -3,18 +3,22 @@ import numpy as np
 
 # ======================================================================
 # HELPER FUNCTIONS
-def countPaths(graph, start, end):
-    # initialize number of paths to 0
+def countPaths(graph, cache, start, end):
+    # if start path already in cache, just report that
     n_paths = 0
-
-    if start == end:
-        # if we reached the destination, then we have completed exactly 1 path
-        n_paths = 1
+    if start in cache.keys():
+        n_paths = cache[start]
     else:
-        # if not at destination, then sum the number of paths that go to
-        # destination starting at neighbors
-        for node in graph[start]:
-            n_paths += countPaths(graph, node, end)
+        # otherwise, compute the number of paths from this node
+        if start == end:
+            # if we reached the destination, then we have completed exactly 1 path
+            n_paths = 1
+        else:
+            # if not at destination, then sum the number of paths that go to
+            # destination starting at neighbors
+            for node in graph[start]:
+                n_paths += countPaths(graph, cache, node, end)
+        cache[start] = n_paths
 
     return n_paths
 
@@ -53,27 +57,27 @@ for rating in ratings:
     G_ratings[rating] = ratings[ (ratings <= (rating+3)) & (ratings > rating)]
 
 # search the graph for paths that start at rating_max and end at rating_min
-# # generic path search is way too slow!
-# n_paths = countPaths(G_ratings, rating_init, rating_max)
+n_paths = countPaths(G_ratings, {}, rating_init, rating_max)
 
-# use unique structure of graph to try to do things more efficiently
-# in particular, look for "isolated" subgraphs where we can count the number of
-# paths within and at the end multiply together the number of paths per subgraph
-subgraph_npaths = []
-subgraph_start = ratings_sorted[0]
-for idx, rating in enumerate(ratings_sorted):
-    if (rating == rating_max) or ((ratings_sorted[idx+1] - rating) == 3):
-        # we've found the "last" node of a "subgraph"
-        subgraph_end = rating
-        n = countPaths(G_ratings, subgraph_start, subgraph_end)
-        subgraph_npaths.append(n)
+# # use unique structure of graph to try to do things more efficiently
+# # in particular, look for "isolated" subgraphs where we can count the number of
+# # paths within and at the end multiply together the number of paths per subgraph
+# subgraph_npaths = []
+# subgraph_start = ratings_sorted[0]
+# for idx, rating in enumerate(ratings_sorted):
+#     if (rating == rating_max) or ((ratings_sorted[idx+1] - rating) == 3):
+#         # we've found the "last" node of a "subgraph"
+#         subgraph_end = rating
+#         n = countPaths(G_ratings, subgraph_start, subgraph_end)
+#         subgraph_npaths.append(n)
+#
+#         # if we're not at the destination, set subgraph start to be next node
+#         if rating != rating_max:
+#             subgraph_start = ratings_sorted[idx+1]
+# # now compute answer by multiplying together all of the subgraph_npaths
+# n_paths = np.prod(np.array(subgraph_npaths))
 
-        # if we're not at the destination, set subgraph start to be next node
-        if rating != rating_max:
-            subgraph_start = ratings_sorted[idx+1]
 
-# now compute answer by multiplying together all of the subgraph_npaths
-n_paths = np.prod(np.array(subgraph_npaths))
 print('Total number of adapter paths from start to finish:', n_paths)
 
 
