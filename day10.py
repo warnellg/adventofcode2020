@@ -54,7 +54,7 @@ print('Number of 1-jolt difference times number of 3-jolt differences:', answer)
 # fewer jolts higher)
 G_ratings = {}
 for rating in ratings:
-    G_ratings[rating] = ratings[ (ratings <= (rating+3)) & (ratings > rating)]
+    G_ratings[rating] = ratings[(ratings <= (rating+3)) & (ratings > rating)]
 
 # search the graph for paths that start at rating_max and end at rating_min
 n_paths = countPaths(G_ratings, {}, rating_init, rating_max)
