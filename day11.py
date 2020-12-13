@@ -146,18 +146,18 @@ with open('input/day11input.txt', 'r') as f:
     text = f.read()
     lines = text.splitlines()
 
-# # build occupancy grid
-# occ_grid = linesToGrid(lines)
-#
-# # evolve grid until stability
-# occ_grid_old = np.array([])
-# while not np.array_equal(occ_grid, occ_grid_old):
-#     occ_grid_old = occ_grid
-#     occ_grid = evolveGrid(occ_grid)
-#
-# # count number of occupied seats
-# n_occupied = np.count_nonzero(occ_grid == 2)
-# print('Number of occupied seats at stability:', n_occupied)
+# build occupancy grid
+occ_grid = linesToGrid(lines)
+
+# evolve grid until stability
+occ_grid_old = np.array([])
+while not np.array_equal(occ_grid, occ_grid_old):
+    occ_grid_old = occ_grid
+    occ_grid = evolveGrid(occ_grid)
+
+# count number of occupied seats
+n_occupied = np.count_nonzero(occ_grid == 2)
+print('Number of occupied seats at stability:', n_occupied)
 
 
 # ======================================================================
