@@ -1,5 +1,6 @@
 import math
 
+
 # ======================================================================
 # HELPER FUNCTIONS
 # find valid time for part 2 by searching over all t starting from 0
